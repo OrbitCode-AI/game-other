@@ -1,0 +1,59 @@
+.ui {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+}
+
+.ui-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ui-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ui-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffd93d;
+}
+
+.ui-pause {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ui-pause:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.preview-container {
+  position: relative;
+  width: 400px;
+  height: 80px;
+  background: #1a1a2e;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10px;
+}
