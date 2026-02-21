@@ -24,6 +24,14 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
     const collectibles: { x: number; y: number; collected: boolean }[] = [];
     const keys = { up: false, down: false, left: false, right: false };
 
+    // Map key codes to direction names
+    const keyCodeToDirection: Record<string, keyof typeof keys> = {
+      ArrowUp: 'up', KeyW: 'up',
+      ArrowDown: 'down', KeyS: 'down',
+      ArrowLeft: 'left', KeyA: 'left',
+      ArrowRight: 'right', KeyD: 'right',
+    };
+
     // Spawn initial collectibles
     for (let i = 0; i < 5; i++) {
       collectibles.push({
@@ -36,29 +44,25 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
     let animationId: number;
     let running = true;
 
-    const update = () => {
-      if (paused) return;
-
-      // Player movement
+    // Apply movement from key state
+    const movePlayer = () => {
       const speed = 4;
       if (keys.up) player.y -= speed;
       if (keys.down) player.y += speed;
       if (keys.left) player.x -= speed;
       if (keys.right) player.x += speed;
-
-      // Bounds
       player.x = Math.max(player.size / 2, Math.min(W - player.size / 2, player.x));
       player.y = Math.max(player.size / 2, Math.min(H - player.size / 2, player.y));
+    };
 
-      // Collectibles
+    // Check and handle collectible pickups
+    const checkCollectibles = () => {
       for (const c of collectibles) {
         if (c.collected) continue;
         const dist = Math.hypot(c.x - player.x, c.y - player.y);
         if (dist < player.size / 2 + 10) {
           c.collected = true;
           onScore(10);
-
-          // Respawn
           setTimeout(() => {
             c.x = 50 + Math.random() * (W - 100);
             c.y = 50 + Math.random() * (H - 100);
@@ -68,12 +72,14 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
       }
     };
 
-    const draw = () => {
-      // Clear
-      ctx.fillStyle = '#1a1a2e';
-      ctx.fillRect(0, 0, W, H);
+    const update = () => {
+      if (paused) return;
+      movePlayer();
+      checkCollectibles();
+    };
 
-      // Grid
+    // Draw background grid
+    const drawGrid = () => {
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
       ctx.lineWidth = 1;
       for (let x = 0; x < W; x += 40) {
@@ -88,6 +94,13 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
         ctx.lineTo(W, y);
         ctx.stroke();
       }
+    };
+
+    const draw = () => {
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, W, H);
+
+      drawGrid();
 
       // Collectibles
       ctx.fillStyle = '#ffd93d';
@@ -104,7 +117,7 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
       ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Player eye (indicates direction)
+      // Player eye
       ctx.fillStyle = '#1a1a2e';
       ctx.beginPath();
       ctx.arc(player.x + 5, player.y - 3, 5, 0, Math.PI * 2);
@@ -130,17 +143,13 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
     gameLoop();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'ArrowUp' || e.code === 'KeyW') keys.up = true;
-      if (e.code === 'ArrowDown' || e.code === 'KeyS') keys.down = true;
-      if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
-      if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
+      const dir = keyCodeToDirection[e.code];
+      if (dir) keys[dir] = true;
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === 'ArrowUp' || e.code === 'KeyW') keys.up = false;
-      if (e.code === 'ArrowDown' || e.code === 'KeyS') keys.down = false;
-      if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
-      if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+      const dir = keyCodeToDirection[e.code];
+      if (dir) keys[dir] = false;
     };
 
     window.addEventListener('keydown', handleKeyDown);
