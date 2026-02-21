@@ -14,13 +14,15 @@ function GameWorld({ paused, onScore }: GameWorldProps) {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d')!;
-    const W = canvas.width = 600;
-    const H = canvas.height = 400;
+    canvas.width = 600;
+    canvas.height = 400;
+    const W = canvas.width;
+    const H = canvas.height;
 
     // Game state
     const player = { x: W / 2, y: H / 2, size: 30 };
     const collectibles: { x: number; y: number; collected: boolean }[] = [];
-    let keys = { up: false, down: false, left: false, right: false };
+    const keys = { up: false, down: false, left: false, right: false };
 
     // Spawn initial collectibles
     for (let i = 0; i < 5; i++) {
