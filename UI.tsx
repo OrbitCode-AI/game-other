@@ -1,9 +1,9 @@
-import './UI.css';
+import './UI.css'
 
 interface UIProps {
-  score: number;
-  paused: boolean;
-  onPause: () => void;
+  score: number
+  paused: boolean
+  onPause: () => void
 }
 
 function UI({ score, paused, onPause }: UIProps) {
@@ -17,7 +17,7 @@ function UI({ score, paused, onPause }: UIProps) {
         {paused ? '▶ Resume' : '⏸ Pause'}
       </button>
     </div>
-  );
+  )
 }
 
 // Default export renders component in isolation for preview
@@ -26,7 +26,7 @@ export default function UIPreview() {
     <div className="preview-container">
       <UI score={150} paused={false} onPause={() => alert('Toggle pause')} />
     </div>
-  );
+  )
 }
 
-export { UI };
+export { UI }

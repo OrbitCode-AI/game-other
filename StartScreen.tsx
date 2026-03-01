@@ -1,7 +1,7 @@
-import './StartScreen.css';
+import './StartScreen.css'
 
 interface StartScreenProps {
-  onStart: () => void;
+  onStart: () => void
 }
 
 function StartScreen({ onStart }: StartScreenProps) {
@@ -26,12 +26,12 @@ function StartScreen({ onStart }: StartScreenProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Default export renders component in isolation for preview
 export default function StartScreenPreview() {
-  return <StartScreen onStart={() => alert('Game starting!')} />;
+  return <StartScreen onStart={() => alert('Game starting!')} />
 }
 
-export { StartScreen };
+export { StartScreen }

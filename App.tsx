@@ -1,25 +1,28 @@
-import { useVar } from 'orbitcode';
-import { GameWorld } from './GameWorld';
-import { UI } from './UI';
-import { StartScreen } from './StartScreen';
-import './styles.css';
+import { useVar } from 'orbitcode'
+import { GameWorld } from './GameWorld'
+import { UI } from './UI'
+import { StartScreen } from './StartScreen'
+import './styles.css'
 
 export default function App() {
-  const [gameState, setGameState] = useVar<'start' | 'playing' | 'paused'>('gameOtherState', 'start');
-  const [score, setScore] = useVar('gameOtherScore', 0);
+  const [gameState, setGameState] = useVar<'start' | 'playing' | 'paused'>(
+    'gameOtherState',
+    'start',
+  )
+  const [score, setScore] = useVar('gameOtherScore', 0)
 
   const handleStart = () => {
-    setScore(0);
-    setGameState('playing');
-  };
+    setScore(0)
+    setGameState('playing')
+  }
 
   const handlePause = () => {
-    setGameState((s) => (s === 'playing' ? 'paused' : 'playing'));
-  };
+    setGameState(s => (s === 'playing' ? 'paused' : 'playing'))
+  }
 
   const handleScore = (points: number) => {
-    setScore((s) => s + points);
-  };
+    setScore(s => s + points)
+  }
 
   return (
     <div className="game-app">
@@ -31,5 +34,5 @@ export default function App() {
         </>
       )}
     </div>
-  );
+  )
 }
